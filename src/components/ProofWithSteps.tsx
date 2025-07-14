@@ -23,7 +23,7 @@ export default function ProofWithSteps({ steps }: Props) {
 
   const {
     confidenceByStep,
-    hintShownByStep,
+    //hintShownByStep,
     setConfidence,
     markHintShown,
     getLog,

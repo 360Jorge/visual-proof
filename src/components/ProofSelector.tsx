@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ProofWithSteps from './ProofWithSteps';
 
 import { proofSteps as sqrt2Steps } from '../data/sqrt2Steps';

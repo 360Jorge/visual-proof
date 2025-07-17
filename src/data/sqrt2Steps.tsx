@@ -44,7 +44,7 @@ export const proofSteps = [
   },
   {
     id: '6',
-    content: '\\therefore \\sqrt{2} \\text{ is irrational.}',
+    content: '\\boxed{\\text{Therefore, }\\sqrt{2}\\text{ is irrational.}}',
     hint: <p>Q.E.D. 💥</p>,
   },
 ];

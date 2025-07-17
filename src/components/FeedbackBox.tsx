@@ -13,38 +13,44 @@ export default function FeedbackBox() {
 
   if (submitted) {
     return (
-      <div className="mt-6 p-4 bg-green-100 border-l-4 border-green-500 rounded">
-        <p className="font-semibold">Thanks for your feedback!</p>
+      <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded">
+        <p className="font-semibold text-green-800">Thanks for your feedback!</p>
       </div>
     );
   }
 
   return (
-    <div className="mt-8 p-4 border rounded bg-gray-50 shadow-sm max-w-2xl w-full mx-auto">
-      <h3 className="text-lg font-bold mb-4 text-center">Your Feedback</h3>
+    <div className="mt-8 p-4 border border-gray-200 rounded bg-white shadow-sm">
+      <h3 className="text-lg font-semibold mb-3 text-gray-800">Your Feedback</h3>
 
       <div className="mb-4">
-        <label className="block mb-1 font-medium">🧠 What was hard?</label>
+        <label className="block mb-1 font-medium text-sm text-gray-700">
+          📝 What was hard?
+        </label>
         <textarea
-          className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-          rows={3}
+          className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+          rows={2}
           value={difficulty}
           onChange={(e) => setDifficulty(e.target.value)}
         />
       </div>
 
       <div className="mb-4">
-        <label className="block mb-1 font-medium">❓ Anything unclear?</label>
+        <label className="block mb-1 font-medium text-sm text-gray-700">
+          🧩 Anything unclear?
+        </label>
         <textarea
-          className="w-full p-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-          rows={3}
+          className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+          rows={2}
           value={confusion}
           onChange={(e) => setConfusion(e.target.value)}
         />
       </div>
 
-      <div className="mb-6">
-        <label className="block mb-1 font-medium">⭐ Rate the proof (1–5)</label>
+      <div className="mb-4">
+        <label className="block mb-1 font-medium text-sm text-gray-700">
+          ⭐️ Rate the proof (1–5)
+        </label>
         <input
           type="range"
           min="1"
@@ -53,17 +59,15 @@ export default function FeedbackBox() {
           onChange={(e) => setRating(Number(e.target.value))}
           className="w-full"
         />
-        <p className="text-sm mt-1 text-center">Rating: {rating} / 5</p>
+        <p className="text-sm text-gray-500 mt-1 text-center">Rating: {rating} / 5</p>
       </div>
 
-      <div className="flex justify-center">
-        <button
-          onClick={handleSubmit}
-          className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          Submit Feedback
-        </button>
-      </div>
+      <button
+        onClick={handleSubmit}
+        className="mt-2 px-4 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 text-sm"
+      >
+        Submit Feedback
+      </button>
     </div>
   );
 }

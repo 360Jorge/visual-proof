@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -6,7 +6,7 @@ import FeedbackBox from './FeedbackBox';
 
 import { useStepInteractionLogger } from '../hooks/useStepInteractionLogger';
 
-type Step = {
+export type Step = {
   id: string;
   content: string;
   hint?: string | React.ReactElement;
@@ -19,11 +19,11 @@ type Props = {
 export default function ProofWithSteps({ steps }: Props) {
   const [stepIndex, setStepIndex] = useState(0);
   const [showHint, setShowHint] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const step = steps[stepIndex];
 
   const {
     confidenceByStep,
-    //hintShownByStep,
     setConfidence,
     markHintShown,
     getLog,
@@ -57,9 +57,11 @@ export default function ProofWithSteps({ steps }: Props) {
 
   return (
     <div className="p-4 sm:p-6 max-w-2xl mx-auto w-full">
-      <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">
-        Step {stepIndex + 1} of {steps.length}
-      </h2>
+      {stepIndex < steps.length - 1 && (
+        <h2 className="text-lg sm:text-xl font-bold mb-4 text-center">
+          Step {stepIndex + 1} of {steps.length}
+        </h2>
+      )}
 
       <motion.div
         key={step.id}
@@ -71,33 +73,35 @@ export default function ProofWithSteps({ steps }: Props) {
         <BlockMath math={step.content} />
       </motion.div>
 
-      <div className="mt-4 flex flex-wrap gap-3 justify-center">
-        <button
-          onClick={goToPrev}
-          disabled={stepIndex === 0}
-          className="px-4 py-2 bg-gray-300 text-black rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-
-        {step.hint && !showHint && (
+      {stepIndex < steps.length - 1 && (
+        <div className="mt-4 flex flex-wrap gap-3 justify-center">
           <button
-            onClick={handleShowHint}
-            className="px-4 py-2 bg-blue-500 text-white rounded"
+            onClick={goToPrev}
+            disabled={stepIndex === 0}
+            className="px-4 py-2 bg-gray-300 text-black rounded disabled:opacity-50"
           >
-            Show Hint
+            Previous
           </button>
-        )}
 
-        {stepIndex < steps.length - 1 && (
-          <button
-            onClick={goToNext}
-            className="px-4 py-2 bg-green-500 text-white rounded"
-          >
-            Next
-          </button>
-        )}
-      </div>
+          {step.hint && !showHint && (
+            <button
+              onClick={handleShowHint}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              Show Hint
+            </button>
+          )}
+
+          {stepIndex < steps.length - 1 && (
+            <button
+              onClick={goToNext}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
 
       <AnimatePresence>
         {showHint && step.hint && (
@@ -145,9 +149,41 @@ export default function ProofWithSteps({ steps }: Props) {
       </div>
 
       {stepIndex === steps.length - 1 && (
-        <div className="mt-8">
-          <FeedbackBox />
-        </div>
+        <>
+          <div className="mt-10 p-6 bg-white border rounded shadow-md">
+            <h3 className="text-xl font-bold mb-4 text-center text-gray-800">🧾 Full Proof Summary</h3>
+            <div className="space-y-4 text-gray-800">
+              {steps.map((step) => (
+                <div key={step.id}>
+                  <BlockMath math={step.content} />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => setIsFeedbackOpen(true)}
+                className="px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition"
+              >
+                💬 Give Feedback
+              </button>
+            </div>
+          </div>
+
+          {isFeedbackOpen && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full relative">
+                <button
+                  onClick={() => setIsFeedbackOpen(false)}
+                  className="absolute top-2 right-3 text-gray-500 hover:text-black"
+                >
+                  ❌
+                </button>
+                <FeedbackBox />
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
